@@ -9,5 +9,5 @@ const questionRouter = require('./routes/questions');
 
 app.use('/api/v1/questions', questionRouter)
 
-app.listen(3000, () => console.log('App listening on port 8080!'))
+app.listen(8080, () => console.log('App listening on port 8080!'))
 module.exports = app;

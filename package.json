@@ -4,7 +4,7 @@
   "description": "stackoverflow-lite is an app built to meet the technical requirements of the Andela Volunteer Program",
   "main": "app.js",
   "scripts": {
-    
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
