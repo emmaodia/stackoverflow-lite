@@ -7,4 +7,10 @@ router.get('/', (req, res, next) => {
   });
 });
 
+router.post('/', (req, res, next) => {
+  res.status(201).json({
+    message : 'This is a success POST request to questions'
+  });
+});
+
 module.exports = router;
