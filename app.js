@@ -8,6 +8,10 @@ dotenv.config();
 
 const app = express();
 
+app.use(morgan('morgan'));
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
+
 const questionRouter = require('./routes/questions');
 
 app.use('/api/v1/questions', questionRouter)
