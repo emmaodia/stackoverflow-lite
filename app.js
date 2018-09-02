@@ -18,7 +18,7 @@ app.listen(3000, () => console.log('App listening on port 8080!'))
 const dbConfig = require('./database.config.js');
 const pg = require('pg');
 
-// Connecting to the database
+// Ensure connection to the database
 pg.connect(dbConfig.url)
 .then(() => {
     console.log("Successfully connected to the database");
