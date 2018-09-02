@@ -43,4 +43,10 @@ router.post('/', (req, res, next) => {
     res.status(201).json({message: "It works"});
 });
 
+router.delete('/', (req, res, next) => {
+  res.status(200).json({
+    message : "requests to deletedd wrks"
+  });
+});
+
 module.exports = router;
