@@ -8,7 +8,7 @@ dotenv.config();
 
 const app = express();
 
-app.use(morgan('morgan'));
+app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 

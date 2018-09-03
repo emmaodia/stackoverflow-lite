@@ -22,6 +22,8 @@ router.get('/', (req, res, next) => {
   });
 });
 
+
+
 router.post('/', (req, res, next) => {
   //Grab data from Http requests
   var data = {
@@ -43,25 +45,48 @@ router.post('/', (req, res, next) => {
     res.status(201).json({message: "It works"});
 });
 
-router.delete('/', (req, res, next) => {
-  // res.status(200).json({
-  //   message : "requests to deletedd wrks"
-  // });
-  var id = req.params.data_id;
+//PUT Method
+router.put('/:data_id', function(req, res) {
 
-  pg.connect(connectionString, (err, client, done) => {
+    // Grab data from the URL parameters
+    var id = req.params.data_id;
 
-    if(err){
-      done();
-      console.error('error fetching client from pool', err);
-      res.status(500).json({ success: false, data: err});
+    // Grab data from http request
+    var data = {
+      title: req.body.title,
+      body: req.body.body
     }
 
-    client.query('DELETE FROM public.questions WHERE id=($1)', [id]);
-    res.status(200).json({
-      message: "Question has been deleted"
+    // Get a Postgres client from the connection pool
+    pg.connect(connectionString, function(err, client, done) {
+        // Handle connection errors
+        if(err) {
+          done();
+          console.log(err);
+          return res.status(500).send(json({ success: false, data: err}));
+        }
+
+        // SQL Query > Update Data
+        client.query("UPDATE public.questions SET title=($1), body=($2) WHERE id=($3)", [data.title, data.body, id]);
+
+        // SQL Query > Select Data
+        var query = client.query("SELECT * FROM public.questions ORDER BY id ASC");
+
+        // Stream results back one row at a time
+        // query.on('row', function(row) {
+        //     results.push(row);
+        // });
+
+        // After all data is returned, close connection and return results
+        // query.on('end', function() {
+        //     done();
+        //     return res.json(results);
+        // });
+        res.status(201).json({message: "Item edited"});
     });
-  });
+
 });
+
+
 
 module.exports = router;
