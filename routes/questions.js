@@ -87,6 +87,25 @@ router.put('/:data_id', function(req, res) {
 
 });
 
+router.delete('/:data_id', (req, res, next) => {
+  // res.status(200).json({
+  //   message : "requests to deletedd wrks"
+  // });
+  var id = req.params.data_id;
 
+  pg.connect(connectionString, (err, client, done) => {
+
+    if(err){
+      done();
+      console.error('error fetching client from pool', err);
+      res.status(500).json({ success: false, data: err});
+    }
+
+    client.query('DELETE FROM public.questions WHERE id=($1)', [id]);
+    res.status(200).json({
+      message: "Question has been deleted"
+    });
+  });
+});
 
 module.exports = router;
