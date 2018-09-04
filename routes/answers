@@ -1,0 +1,14 @@
+const express = require('express');
+const router = express.Router();
+var pg = require('pg');
+var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/stackoverflow-lite';
+
+router.get('/', (req, res, next) => {
+  res.status(200).json({
+    message : "GET answers"
+  });
+});
+
+
+
+module.exports = router;
