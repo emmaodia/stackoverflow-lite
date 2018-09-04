@@ -40,9 +40,21 @@ router.post('/', (req, res, next) => {
 
     client.query('INSERT INTO public.questions(title, body) values($1, $2)',
       [data.title, data.body]);
-        });
+      done();
 
-    res.status(201).json({message: "It works"});
+    client.query('SELECT * FROM public.questions', (err, result) => {
+
+      if(err){
+        return console.error('error running query', err);
+      }
+      // console.log(result.rows)
+      res.status(201).json({
+        Questions: result.rows
+      });
+      done();
+    });
+  });
+    //res.status(201).json({message: "It works"});
 });
 
 //PUT Method
@@ -68,9 +80,21 @@ router.put('/:data_id', function(req, res) {
 
         // SQL Query > Update Data
         client.query("UPDATE public.questions SET title=($1), body=($2) WHERE id=($3)", [data.title, data.body, id]);
+        done();
 
+      client.query('SELECT * FROM public.questions', (err, result) => {
+
+        if(err){
+          return console.error('error running query', err);
+        }
+        // console.log(result.rows)
+        res.status(201).json({
+          Questions: result.rows
+        });
+        done();
+      });
         // SQL Query > Select Data
-        var query = client.query("SELECT * FROM public.questions ORDER BY id ASC");
+        //var query = client.query("SELECT * FROM public.questions ORDER BY id ASC");
 
         // Stream results back one row at a time
         // query.on('row', function(row) {
@@ -82,7 +106,7 @@ router.put('/:data_id', function(req, res) {
         //     done();
         //     return res.json(results);
         // });
-        res.status(201).json({message: "Item edited"});
+      //  res.status(201).json({message: "Item edited"});
     });
 
 });
@@ -102,8 +126,49 @@ router.delete('/:data_id', (req, res, next) => {
     }
 
     client.query('DELETE FROM public.questions WHERE id=($1)', [id]);
-    res.status(200).json({
-      message: "Question has been deleted"
+    // res.status(200).json({
+    //   message: "Question has been deleted"
+    // });
+    done();
+
+  client.query('SELECT * FROM public.questions', (err, result) => {
+
+    if(err){
+      return console.error('error running query', err);
+    }
+    // console.log(result.rows)
+    res.status(201).json({
+      Questions: result.rows
+    });
+    done();
+  });
+  });
+});
+
+router.get('/:id', (req, res, next) => {
+  // Grab data from the URL parameters
+  var id = req.params.data_id;
+
+  // Grab data from http request
+  var data = {
+    title: req.body.title,
+    body: req.body.body
+  }
+
+  pg.connect( connectionString, (err, client, done) => {
+    if(err){
+      return console.error('error fetching client from pool', err);
+    }
+    client.query('SELECT * FROM public.questions WHERE id=($1)', [id], (err, result) => {
+
+      if(err){
+        return console.error('error running query', err);
+      }
+      // console.log(result.rows)
+      res.status(200).json({
+        Questions: result.rows
+      });
+      done();
     });
   });
 });
