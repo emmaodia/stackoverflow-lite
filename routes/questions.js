@@ -145,30 +145,43 @@ router.delete('/:data_id', (req, res, next) => {
   });
 });
 
-router.get('/:id', (req, res, next) => {
+router.get('/:data_id', (req, res, next) => {
   // Grab data from the URL parameters
-  var id = req.params.data_id;
+  var data_id = parseInt(req.params.data_id);
 
   // Grab data from http request
-  var data = {
-    title: req.body.title,
-    body: req.body.body
-  }
+  // var data = {
+  //   title: req.body.title,
+  //   body: req.body.body
+  // }
 
   pg.connect( connectionString, (err, client, done) => {
     if(err){
       return console.error('error fetching client from pool', err);
     }
-    client.query('SELECT * FROM public.questions WHERE id=($1)', [id], (err, result) => {
-
-      if(err){
-        return console.error('error running query', err);
-      }
-      // console.log(result.rows)
-      res.status(200).json({
-        Questions: result.rows
-      });
-      done();
+    client.query(`SELECT * FROM public.questions WHERE id=${data_id}`
+    // => {
+    //
+    //   if(err){
+    //     return console.error('error running query', err);
+    //   }
+    //   // console.log(result.rows)
+    //   res.status(200).json({
+    //     Questions: result.rows
+    //   });
+    //   done();
+  //}
+)
+  .then(function (data) {
+      res.status(200)
+        .json({
+          status: 'success',
+          data: data.rows,
+          message: 'Single GET request successful'
+        });
+    })
+    .catch(function (err) {
+      return next(err);
     });
   });
 });
