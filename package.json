@@ -21,8 +21,10 @@
   "homepage": "https://github.com/emmaodia/stackoverflow-lite#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "morgan": "^1.9.0",
-    "nodemon": "^1.18.3"
+    "nodemon": "^1.18.4",
+    "pg": "^6.4.2"
   }
 }
