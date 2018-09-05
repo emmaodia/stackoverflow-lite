@@ -8,6 +8,5 @@ var query = client.query(`CREATE TABLE IF NOT EXISTS
                           id SERIAL PRIMARY KEY,
                           name VARCHAR(255),
                           email VARCHAR(255) NOT NULL UNIQUE,
-                          CREATED_AT TIMESTAMP DEFAULT NOW(),
                           password VARCHAR(255) NOT NULL`);
 query.on('end', function() { client.end(); });
