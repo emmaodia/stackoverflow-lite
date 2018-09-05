@@ -12,8 +12,10 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+const userRouter = require('./routes/users');
 const questionRouter = require('./routes/questions');
 
+app.use('/api/v1/user', userRouter)
 app.use('/api/v1/questions', questionRouter)
 
 app.listen(3000, () => console.log('App listening on port 8080!'))
