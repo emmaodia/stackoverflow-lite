@@ -11,7 +11,10 @@ var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/st
 
 var client = new pg.Client(connectionString);
 client.connect();
-var query = client.query('CREATE TABLE questions(id SERIAL PRIMARY KEY, text VARCHAR(40) not null, complete BOOLEAN)');
+var query = client.query(`CREATE TABLE
+                          questions(id SERIAL PRIMARY KEY,
+                          title VARCHAR(40) not null,
+                          body TEXT)`);
 query.on('end', function() { client.end(); });
 
 //module.exports = question;
