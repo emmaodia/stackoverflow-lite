@@ -6,7 +6,6 @@ client.connect();
 
 //This table has to belong to Questions table
 var query = client.query(`CREATE TABLE answers
-                          (id SERIAL PRIMARY KEY,
-                          text VARCHAR(40) not null,
-                          body VARCHAR not null)`);
+                          (ans_id SERIAL PRIMARY KEY,
+                          content VARCHAR not null)`);
 query.on('end', function() { client.end(); });
