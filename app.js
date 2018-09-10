@@ -7,6 +7,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const app = express();
+app.use(cookieParser());
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
