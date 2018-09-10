@@ -1,13 +1,11 @@
-# stackoverflow-lite
-
 # StackOverflow-lite
+[![Build Status](https://travis-ci.org/emmaodia/stackoverflow-lite.svg?branch=master)](https://travis-ci.org/emmaodia/stackoverflow-lite)
+
+## Project Overview
 StackOverflow-lite is a platform where people can ask questions and provide answers.
 
 ## Heroku deployment
 > **[Check it out](https://emma-stackoverflow-lite.herokuapp.com/)**
-
-## Project Overview
-StackOverflow-lite is a platform where people can ask questions and provide answers.
 
 ## Required Features
     - Users can create an account and log in.
@@ -19,18 +17,17 @@ StackOverflow-lite is a platform where people can ask questions and provide answ
 
 
 #  Complete Tasks
- > **[Complete UI Pages](https://p8ul.github.io/stackoverflow-lite/UI/)**
+ > **[Complete UI Pages](https://emma-stackoverflow-lite-ui.herokuapp.com/)**
 
  >  **[API End points documentation](https://stackoverflowlite2.docs.apiary.io/#reference)**
 
- >  **[Pivot tracker board](https://www.pivotaltracker.com/n/projects/2189597)**
+ >  **[Pivot tracker board](https://www.pivotaltracker.com/n/projects/2193928)**
 
 
 ## Installation
 
 ```
-
-    $ git clone https://github.com/p8ul/stackoverflow-lite.git
+    $ git clone https://github.com/emmaodia/stackoverflow-lite.git
     $ cd stackoverflow-lite
     $ npm install
 ```
@@ -61,7 +58,6 @@ Method | Endpoint | Functionality
 --- | --- | ---
 POST | `/api/v1/questions` | Add a question
 GET | `/api/v1/questions` | Lists all questions
-GET | `/api/v1/questions/?q={search_string}` | Search a questions
 GET | `/api/v1/questions/{question_id}` | Retrieve a question
 PUT | `/api/v1/questions/{question_id}` | Edit a question of a logged in user
 DELETE | `/api/v1/questions/{question_id}` | Delete a request of a logged in user
@@ -75,14 +71,13 @@ GET | `/api/v1/questions/answers` | Lists all answers
 GET | `/api/v1/questions/answers/{answerID}` | Retrieve an answer
 PUT | `/api/v1/questions/{question_id}/answer/{answerID}` | Edit an answer
 DELETE | `/api/v1/questions/{question_id}/answer/{answerID}` | Delete an answer
-POST | `/api/v1/questions/answers/vote/{answer_id}` | Upvote/DownVote an answer
-POST | `/api/v1/questions/answers/comment/{answer_id}` | Comment on an answer
+POST | `/api/v1/questions/answers/vote/{answer_id}` | Mark answer as prefared
 
 
 ## Credits
 This challenge was part of the Andela VLF Technical Assesment.
 
-Credits to [Avinash Tripathi](https://dribbble.com/nashatwork) for an awesome [Stackoverflow redesign concept](https://dribbble.com/shots/2876030-Stackoverflow-redesign?_=1535432246078&utm_source=Clipboard_Shot&utm_campaign=nashatwork&utm_content=Stackoverflow%20redesign&utm_medium=Social_Share). Helped in comming up with some dashboard UI components.
+Credits to Papa Google!
 
 ## Author
 Emmanuel Odianosen.
