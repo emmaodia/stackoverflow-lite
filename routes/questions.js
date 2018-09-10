@@ -3,7 +3,7 @@ const router = express.Router();
 var pg = require('pg');
 var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/stackoverflow-lite';
 
-//
+//This is the Route to GET all Questions on the platform
 router.get('/', (req, res, next) => {
 
   var id = parseInt(req.params);
@@ -17,7 +17,7 @@ router.get('/', (req, res, next) => {
       if(err){
         return console.error('error running query', err);
       }
-      // console.log(result.rows)
+      // This will return all the questions
       res.status(200).json({
         Questions: result.rows
       });
@@ -26,6 +26,7 @@ router.get('/', (req, res, next) => {
   });
 });
 
+//This is the Route to POST a Question on the platform
 router.post('/', (req, res, next) => {
   //Grab data from Http requests
   var data = {
@@ -59,7 +60,7 @@ router.post('/', (req, res, next) => {
     //res.status(201).json({message: "It works"});
 });
 
-//PUT Method
+//This is the Route to EDIT a Question on the platform
 router.put('/:data_id', function(req, res) {
 
     // Grab data from the URL parameters
@@ -89,39 +90,16 @@ router.put('/:data_id', function(req, res) {
         if(err){
           return console.error('error running query', err);
         }
-        // console.log(result.rows)
+        // log result on rows
         res.status(201).json({
           Questions: result.rows
         });
         done();
       });
-        // SQL Query > Select Data
-        //var query = client.query("SELECT * FROM public.questions ORDER BY id ASC");
-
-        // Stream results back one row at a time
-        // query.on('row', function(row) {
-        //     results.push(row);
-        // });
-
-        // After all data is returned, close connection and return results
-        // query.on('end', function() {
-        //     done();
-        //     return res.json(results);
-        // });
-      //  res.status(201).json({message: "Item edited"});
     });
-
 });
 
-/*
-    route for posting answer to a specfic function
-*/
-router.get('/id/answers', (req, res, next) => {
-  res.status(200).json({
-    message : "Route exists!"
-  });
-});
-
+//This is the Route to POST an Answer to a Question on the platform
 router.post('/:data_id/answers', (req, res, next) => {
   //Grab data from Http requests
   var data_id = parseInt(req.params.data_id);
@@ -149,16 +127,16 @@ router.post('/:data_id/answers', (req, res, next) => {
       if(err){
         return console.error('error running query', err);
       }
-      // console.log(result.rows)
+      // log result
       res.status(201).json({
         Answers: result.rows
       });
       done();
     });
   });
-    //res.status(201).json({message: "It works"});
 });
 
+//This is the Route to EDIT an Answer to a Question on the platform
 router.put('/:data_id/answers/:id', (req, res, next) => {
   //Grab data from Http requests
   var id = parseInt(req.params.id);
@@ -192,14 +170,12 @@ router.put('/:data_id/answers/:id', (req, res, next) => {
     });
     done();
   });
-    //res.status(201).json({message: "It works"});
   });
 });
 
+//This is the Route to DELETE all Answers to a Question and Question itself on the platform
 router.delete('/:data_id', (req, res, next) => {
-  // res.status(200).json({
-  //   message : "requests to deletedd wrks"
-  // });
+
   var id = req.params.data_id;
 
   pg.connect(connectionString, (err, client, done) => {
@@ -211,9 +187,6 @@ router.delete('/:data_id', (req, res, next) => {
     }
 
     client.query('DELETE FROM public.questions WHERE id=($1)', [id]);
-    // res.status(200).json({
-    //   message: "Question has been deleted"
-    // });
     done();
 
   client.query('SELECT * FROM public.questions', (err, result) => {
@@ -221,7 +194,7 @@ router.delete('/:data_id', (req, res, next) => {
     if(err){
       return console.error('error running query', err);
     }
-    // console.log(result.rows)
+    // log result
     res.status(201).json({
       Questions: result.rows
     });
@@ -230,15 +203,10 @@ router.delete('/:data_id', (req, res, next) => {
   });
 });
 
+//This is the Route to GET a particular Question on the platform
 router.get('/:data_id', (req, res, next) => {
   // Grab data from the URL parameters
   var data_id = parseInt(req.params.data_id);
-
-  // Grab data from http request
-  // var data = {
-  //   title: req.body.title,
-  //   body: req.body.body
-  // }
 
   pg.connect( connectionString, (err, client, done) => {
     if(err){
@@ -246,19 +214,7 @@ router.get('/:data_id', (req, res, next) => {
     }
 
     client.query(`SELECT * FROM public.questions
-                  WHERE public.questions.id=${data_id}`
-    // => {
-    //
-    //   if(err){
-    //     return console.error('error running query', err);
-    //   }
-    //   // console.log(result.rows)
-    //   res.status(200).json({
-    //     Questions: result.rows
-    //   });
-    //   done();
-  //}
-)
+                  WHERE public.questions.id=${data_id}`)
   .then(function (data) {
       res.status(200)
         .json({
@@ -273,6 +229,7 @@ router.get('/:data_id', (req, res, next) => {
   });
 });
 
+//This is the Route to GET all Answers to a Question on the platform
 router.get('/:data_id/answers', (req, res, next) => {
   // Grab data from the URL parameters
   var data_id = parseInt(req.params.data_id);
@@ -287,7 +244,7 @@ router.get('/:data_id/answers', (req, res, next) => {
                   ON public.answers.ans_id = public.questions.id
                   WHERE public.questions.id=${data_id}`
                 )
-  .then(function (data) {
+  .then((data) => {
       res.status(200)
         .json({
           status: 'success',
@@ -300,4 +257,5 @@ router.get('/:data_id/answers', (req, res, next) => {
     });
   });
 });
+
 module.exports = router;
