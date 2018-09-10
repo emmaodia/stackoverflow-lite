@@ -5,3 +5,5 @@ node_js:
   - "lts/*"
 after_success:
   - npm run coverage
+
+repo_token: Ys1hlPMnqKb8d28XODKr3eJeru926Oy8c
