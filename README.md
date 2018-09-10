@@ -1,5 +1,5 @@
 # StackOverflow-lite
-[![Build Status](https://travis-ci.org/emmaodia/stackoverflow-lite.svg?branch=master)](https://travis-ci.org/emmaodia/stackoverflow-lite) [![Coverage Status](https://coveralls.io/repos/github/emmaodia/stackoverflow-lite/badge.svg)](https://coveralls.io/github/emmaodia/stackoverflow-lite)
+[![Build Status](https://travis-ci.org/emmaodia/stackoverflow-lite.svg?branch=master)](https://travis-ci.org/emmaodia/stackoverflow-lite) [![Coverage Status](https://coveralls.io/repos/github/emmaodia/stackoverflow-lite/badge.svg?branch=master)](https://coveralls.io/github/emmaodia/stackoverflow-lite?branch=master)
 
 ## Project Overview
 StackOverflow-lite is a platform where people can ask questions and provide answers.
