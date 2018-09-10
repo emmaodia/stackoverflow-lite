@@ -4,11 +4,14 @@ var pg = require('pg');
 var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/stackoverflow-lite';
 
 router.get('/', (req, res, next) => {
+
+  var id = parseInt(req.params);
+
   pg.connect( connectionString, (err, client, done) => {
     if(err){
       return console.error('error fetching client from pool', err);
     }
-    client.query('SELECT * FROM public.questions', (err, result) => {
+    client.query(`select * from public.questions`, (err, result) => {
 
       if(err){
         return console.error('error running query', err);
@@ -21,8 +24,6 @@ router.get('/', (req, res, next) => {
     });
   });
 });
-
-
 
 router.post('/', (req, res, next) => {
   //Grab data from Http requests
@@ -111,6 +112,74 @@ router.put('/:data_id', function(req, res) {
 
 });
 
+/*
+    route for posting answer to a specfic function
+*/
+router.get('/id/answers', (req, res, next) => {
+  res.status(200).json({
+    message : "Route exists!"
+  });
+});
+
+router.post('/id/answers', (req, res, next) => {
+  //Grab data from Http requests
+  var data = {
+    content: req.body.content
+  }
+
+  pg.connect(connectionString, (err, client, done) => {
+    if(err){
+      done();
+      console.error('error fetching client from pool', err);
+      res.status(500).json({ success: false, data: err});
+    }
+
+    client.query('INSERT INTO public.answers(content) values($1)',
+      [data.content]);
+      done();
+
+    client.query(`select * from public.questions, public.answers where questions.id=${id} and answers.questionid=${id}`, (err, result) => {
+
+      if(err){
+        return console.error('error running query', err);
+      }
+      // console.log(result.rows)
+      res.status(201).json({
+        Answers: result.rows
+      });
+      done();
+    });
+  });
+    //res.status(201).json({message: "It works"});
+});
+// router.post('/:questionId/answers', async (req, res, next) => {
+//   let result;
+//   const {
+//     questionId
+//   } = req.params;
+//   const {
+//     answer
+//   } = req.body;
+//   const {
+//     id: userid
+//   } = req.user;
+//   if (!questionId || !answer) {
+//     return res.status(400).send('Answer cannot be null');
+//   }
+//
+//   try {
+//     result = await AnswerModel.create({
+//       answer,
+//       userid,
+//       questionId
+//     });
+//   } catch (err) {
+//     return next(err);
+//   }
+//
+//   return res.json(result);
+// });
+
 router.delete('/:data_id', (req, res, next) => {
   // res.status(200).json({
   //   message : "requests to deletedd wrks"
@@ -159,7 +228,9 @@ router.get('/:data_id', (req, res, next) => {
     if(err){
       return console.error('error fetching client from pool', err);
     }
-    client.query(`SELECT * FROM public.questions WHERE id=${data_id}`
+
+    client.query(`SELECT * FROM public.questions
+                  WHERE public.questions.id=${data_id}`
     // => {
     //
     //   if(err){
@@ -186,4 +257,31 @@ router.get('/:data_id', (req, res, next) => {
   });
 });
 
+router.get('/:data_id/answers', (req, res, next) => {
+  // Grab data from the URL parameters
+  var data_id = parseInt(req.params.data_id);
+
+  pg.connect( connectionString, (err, client, done) => {
+    if(err){
+      return console.error('error fetching client from pool', err);
+    }
+
+    client.query(`SELECT * FROM public.questions
+                  INNER JOIN public.answers
+                  ON public.answers.ans_id = public.questions.id
+                  WHERE public.questions.id=${data_id}`
+                )
+  .then(function (data) {
+      res.status(200)
+        .json({
+          status: 'success',
+          data: data.rows,
+          message: 'Single GET request successful'
+        });
+    })
+    .catch(function (err) {
+      return next(err);
+    });
+  });
+});
 module.exports = router;

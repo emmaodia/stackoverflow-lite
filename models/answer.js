@@ -6,6 +6,10 @@ client.connect();
 
 //This table has to belong to Questions table
 var query = client.query(`CREATE TABLE answers
-                          (ans_id SERIAL PRIMARY KEY,
-                          content VARCHAR not null)`);
+                          (id SERIAL PRIMARY KEY,
+                          content VARCHAR not null,
+                          ans_id INTEGER REFERENCES public.questions(id) ON DELETE CASCADE
+                        )`);
 query.on('end', function() { client.end(); });
+
+//FOREIGN KEY (questionId) REFERENCES public.questions (id) ON DELETE CASCADE
