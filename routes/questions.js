@@ -3,6 +3,7 @@ const router = express.Router();
 var pg = require('pg');
 var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/stackoverflow-lite';
 
+//
 router.get('/', (req, res, next) => {
 
   var id = parseInt(req.params);
@@ -157,33 +158,43 @@ router.post('/:data_id/answers', (req, res, next) => {
   });
     //res.status(201).json({message: "It works"});
 });
-// router.post('/:questionId/answers', async (req, res, next) => {
-//   let result;
-//   const {
-//     questionId
-//   } = req.params;
-//   const {
-//     answer
-//   } = req.body;
-//   const {
-//     id: userid
-//   } = req.user;
-//   if (!questionId || !answer) {
-//     return res.status(400).send('Answer cannot be null');
-//   }
-//
-//   try {
-//     result = await AnswerModel.create({
-//       answer,
-//       userid,
-//       questionId
-//     });
-//   } catch (err) {
-//     return next(err);
-//   }
-//
-//   return res.json(result);
-// });
+
+router.put('/:data_id/answers/:id', (req, res, next) => {
+  //Grab data from Http requests
+  var id = parseInt(req.params.id);
+
+  var data = {
+    content: req.body.content
+  }
+
+  pg.connect(connectionString, (err, client, done) => {
+    if(err){
+      done();
+      console.error('error fetching client from pool', err);
+      res.status(500).json({ success: false, data: err});
+    }
+
+    // SQL Query > Update Data
+    client.query(`UPDATE public.answers SET content=($1) WHERE id=(${id})`, [data.content]);
+    done();
+
+  client.query(`SELECT * FROM public.questions
+                INNER JOIN public.answers
+                ON public.answers.ans_id = public.questions.id
+                WHERE public.questions.id=${data_id}`, (err, result) => {
+
+    if(err){
+      return console.error('error running query', err);
+    }
+    // console.log(result.rows)
+    res.status(201).json({
+      Questions: result.rows
+    });
+    done();
+  });
+    //res.status(201).json({message: "It works"});
+  });
+});
 
 router.delete('/:data_id', (req, res, next) => {
   // res.status(200).json({
