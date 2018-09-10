@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
+const babel = require("@babel/core");
 
 dotenv.config();
 
@@ -12,6 +13,7 @@ app.use(cookieParser());
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+babel.transform("code");
 
 const questionRouter = require('./routes/questions');
 
