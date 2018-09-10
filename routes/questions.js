@@ -121,8 +121,10 @@ router.get('/id/answers', (req, res, next) => {
   });
 });
 
-router.post('/id/answers', (req, res, next) => {
+router.post('/:data_id/answers', (req, res, next) => {
   //Grab data from Http requests
+  var data_id = parseInt(req.params.data_id);
+
   var data = {
     content: req.body.content
   }
@@ -134,11 +136,14 @@ router.post('/id/answers', (req, res, next) => {
       res.status(500).json({ success: false, data: err});
     }
 
-    client.query('INSERT INTO public.answers(content) values($1)',
+    client.query(`INSERT INTO public.answers(content, ans_id) values($1, ${data_id})`,
       [data.content]);
       done();
 
-    client.query(`select * from public.questions, public.answers where questions.id=${id} and answers.questionid=${id}`, (err, result) => {
+    client.query(`SELECT * FROM public.questions
+                  INNER JOIN public.answers
+                  ON public.answers.ans_id = public.questions.id
+                  WHERE public.questions.id=${data_id}`, (err, result) => {
 
       if(err){
         return console.error('error running query', err);
