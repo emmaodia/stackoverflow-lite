@@ -13,10 +13,8 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 const questionRouter = require('./routes/questions');
-const answerRouter = require('./routes/answers');
 
 app.use('/api/v1/questions', questionRouter)
-app.use('/api/v1/answers', answerRouter)
 
 app.listen(3000, () => console.log('App listening on port 8080!'))
 
